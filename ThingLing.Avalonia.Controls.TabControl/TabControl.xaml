@@ -1,0 +1,25 @@
+﻿<UserControl x:Class="ThingLing.WPF.Controls.TabControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:ThingLing.WPF.Controls"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800"
+             Loaded="TabControl_Loaded">
+    <DockPanel>
+        <DockPanel x:Name="TabStrip">
+            <Image x:Name="DocMenu" Source="Images/DocMenu.png" DockPanel.Dock="Right"
+                   ToolTip="Show Open Tabs" Height="15"
+                   MouseLeftButtonUp="OpenTabs_MouseLeftButtonUp" />
+            <ScrollViewer HorizontalScrollBarVisibility="Hidden"
+                          VerticalScrollBarVisibility="Hidden">
+                <StackPanel x:Name="HeaderPanel" Orientation="Horizontal" />
+            </ScrollViewer>
+        </DockPanel>
+
+        <Border x:Name="SeparatorBorder" BorderThickness="1" HorizontalAlignment="Stretch" />
+        <Grid x:Name="ContentPanel" LayoutUpdated="ContentPanel_LayoutUpdated"/>
+    </DockPanel>
+
+</UserControl>

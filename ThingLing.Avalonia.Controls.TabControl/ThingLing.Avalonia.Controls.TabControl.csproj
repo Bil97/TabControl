@@ -1,0 +1,60 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net5.0</TargetFramework>
+    <Nullable>annotations</Nullable>
+    <RootNamespace>ThingLing.Avalonia.Controls</RootNamespace>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <OutputPath>D:\Programming\Projects\ThingLing\ThinglingLib\</OutputPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <OutputPath>D:\Programming\Projects\ThingLing\ThinglingLib\</OutputPath>
+  </PropertyGroup>
+  <ItemGroup>
+    <AvaloniaResource Include="Images\*" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Remove="Images\application.png" />
+    <None Remove="Images\application_get.png" />
+    <None Remove="Images\application_put.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Avalonia" Version="0.10.0" />
+    <PackageReference Include="Avalonia.Desktop" Version="0.10.0" />
+    <PackageReference Include="Avalonia.Diagnostics" Version="0.10.0" />
+    <PackageReference Include="ThingLing.Avalonia.Controls.MessageBox" Version="1.0.0" />
+  </ItemGroup>
+  <ItemGroup>
+    <Page Include="InternalControls\TabItemBody.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="InternalControls\TabItemHeader.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="TabControl.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <None Update="InternalControls\TabItemBody.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </None>
+    <None Update="InternalControls\TabItemHeader.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </None>
+    <None Update="TabControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Feature\" />
+  </ItemGroup>
+</Project>

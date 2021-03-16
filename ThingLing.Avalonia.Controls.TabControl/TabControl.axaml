@@ -1,0 +1,22 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="ThingLing.Avalonia.Controls.TabControl"
+             Initialized ="TabControl_Initialized">
+  <DockPanel>
+    <DockPanel x:Name="TabStrip">
+      <Image x:Name="DocMenu" Source="avares://ThingLing.Avalonia.Controls.TabControl/Images/DocMenu.png" DockPanel.Dock="Right"
+             ToolTip.Tip="Show Open Tabs" Height="15"
+             PointerReleased="OpenTabs_PointerReleased" />
+      <ScrollViewer HorizontalScrollBarVisibility="Hidden"
+                    VerticalScrollBarVisibility="Hidden">
+        <StackPanel x:Name="HeaderPanel" Orientation="Horizontal" />
+      </ScrollViewer>
+    </DockPanel>
+
+    <Border x:Name="SeparatorBorder" BorderThickness="1" HorizontalAlignment="Stretch" />
+    <Grid x:Name="ContentPanel" LayoutUpdated="ContentPanel_LayoutUpdated"/>
+  </DockPanel>
+</UserControl>
