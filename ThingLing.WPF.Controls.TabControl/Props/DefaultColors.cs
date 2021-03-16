@@ -1,6 +1,6 @@
 ﻿using System.Windows.Media;
 
-namespace ThingLing.WPF.Controls.Properties
+namespace ThingLing.WPF.Controls.Props
 {
     internal static class DefaultColors
     {

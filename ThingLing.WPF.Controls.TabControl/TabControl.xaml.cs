@@ -5,13 +5,13 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using ThingLing.WPF.Controls.InternalControls;
-using ThingLing.WPF.Controls.Properties;
-using ThingLing.WPF.ControlsProperties;
+using ThingLing.WPF.Controls.Props;
+using ThingLing.WPF.Controls.Props;
 
 namespace ThingLing.WPF.Controls
 {
     /// <summary>
-    /// Interaction logic for TabControl.xaml
+    ///  Represents a control that contains multiple items that share the same space on the screen.
     /// </summary>
     public partial class TabControl : UserControl
     {

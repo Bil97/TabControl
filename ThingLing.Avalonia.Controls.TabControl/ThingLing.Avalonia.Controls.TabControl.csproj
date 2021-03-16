@@ -26,35 +26,4 @@
     <PackageReference Include="Avalonia.Diagnostics" Version="0.10.0" />
     <PackageReference Include="ThingLing.Avalonia.Controls.MessageBox" Version="1.0.0" />
   </ItemGroup>
-  <ItemGroup>
-    <Page Include="InternalControls\TabItemBody.xaml">
-      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="InternalControls\TabItemHeader.xaml">
-      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="TabControl.xaml">
-      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-  </ItemGroup>
-  <ItemGroup>
-    <None Update="InternalControls\TabItemBody.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </None>
-    <None Update="InternalControls\TabItemHeader.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </None>
-    <None Update="TabControl.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Feature\" />
-  </ItemGroup>
 </Project>

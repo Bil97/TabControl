@@ -6,12 +6,17 @@ using Avalonia.Markup.Xaml;
 using Avalonia.Media;
 using System;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace ThingLing.Avalonia.Controls.InternalControls
 {
     public class TabItemHeader : UserControl
     {
+        internal Image ContentIcon;
+        internal TextBlock ContentChanged;
+        internal Border CloseButton;
+        internal Border HideButton;
+        internal Border MenuButton;
+        internal TextBlock ContentTitle;
         public TabItemHeader()
         {
             InitializeComponent();
@@ -21,9 +26,15 @@ namespace ThingLing.Avalonia.Controls.InternalControls
         private void InitializeComponent()
         {
             AvaloniaXamlLoader.Load(this);
+            ContentIcon = this.FindControl<Image>(nameof(ContentIcon));
+            ContentChanged = this.FindControl<TextBlock>(nameof(ContentChanged));
+            CloseButton = this.FindControl<Border>(nameof(CloseButton));
+            HideButton = this.FindControl<Border>(nameof(HideButton));
+            MenuButton = this.FindControl<Border>(nameof(MenuButton));
+            ContentTitle = this.FindControl<TextBlock>(nameof(ContentTitle));
         }
 
-        private void TabItemHeader_Initialized(object? sender, EventArgs e)
+        private void TabItemHeader_Initialized(object sender, EventArgs e)
         {
             this.BringIntoView(new Rect(new Size(this.Width, this.Height)));
         }
@@ -40,63 +51,47 @@ namespace ThingLing.Avalonia.Controls.InternalControls
 
         private void Close()
         {
-            TabControl? parent;
+            TabControl parent;
             int tabIndex;
             TabItem tabItem;
-            Grid parentContentPanel = new Grid();
-            Grid panelParentContentPanel = new Grid();
-            StackPanel parentHeaderPanel = new StackPanel();
 
             if ((Parent as Panel)?.Parent.GetType() == typeof(TabItemBody))
             {
                 var panelParent = ((Panel)Parent).Parent as TabItemBody;
                 parent = (TabControl)((Panel)((Panel)((TabItemBody)((Panel)Parent).Parent).Parent).Parent).Parent;
-
-                var headerPanelParent = (panelParent.Parent as Panel).Parent as Panel;
-                parentHeaderPanel = headerPanelParent.FindControl<StackPanel>("HeaderPanel");
-
-                parentContentPanel = parent.FindControl<Grid>("ContentPanel");
-                tabIndex = parentContentPanel.Children.IndexOf(panelParent);
-
-                panelParentContentPanel = parent.FindControl<Grid>("ContentPanel");
-                tabItem = parent.TabItems!.FirstOrDefault(i => i.Content == panelParentContentPanel.Children[0]);
+                tabIndex = parent.ContentPanel.Children.IndexOf(panelParent);
+                tabItem = parent.TabItems!.FirstOrDefault(i => i.Content == panelParent?.ContentPanel.Children[0]);
             }
             else
             {
                 parent = (TabControl)((Panel)((Panel)((ScrollViewer)((Panel)Parent).Parent).Parent).Parent).Parent;
-
-                tabIndex = parentHeaderPanel.Children.IndexOf(this);
+                tabIndex = parent.HeaderPanel.Children.IndexOf(this);
                 tabItem = parent.TabItems!.FirstOrDefault(i => i.TabItemHeader() == this);
             }
 
-            parentContentPanel.Children.RemoveAt(tabIndex);
-            parentHeaderPanel.Children.RemoveAt(tabIndex);
+            parent.ContentPanel.Children.RemoveAt(tabIndex);
+            parent.HeaderPanel.Children.RemoveAt(tabIndex);
 
             parent.TabItems.Remove(tabItem);
 
-            if (parentContentPanel.Children.Count < 1)
+            if (parent.ContentPanel.Children.Count < 1)
             {
                 parent.tabIndex = -1;
                 return;
             }
-            //var nextTabIndex = parentHeaderPanel.Children.IndexOf(parent.TabItems[0].TabItemHeader());
-            var task = new Task(async () =>
-            {
-                await MessageBox.ShowAsync(MainWindow.Window, $"{parent.TabItems.Count}");
-            });
-            task.RunSynchronously();
+            var nextTabIndex = parent.HeaderPanel.Children.IndexOf(parent.TabItems[0].TabItemHeader());
 
-            //((TabItemHeader)parentHeaderPanel.Children[nextTabIndex]).Background = tabItem?.BackgroundWhenFocused;
-            //((TabItemHeader)parentHeaderPanel.Children[nextTabIndex]).Foreground = tabItem?.ForegroundWhenFocused;
+            ((TabItemHeader)parent.HeaderPanel.Children[nextTabIndex]).Background = tabItem?.BackgroundWhenFocused;
+            ((TabItemHeader)parent.HeaderPanel.Children[nextTabIndex]).Foreground = tabItem?.ForegroundWhenFocused;
 
-            //var element = (TabItemHeader)parentHeaderPanel.Children[nextTabIndex];
+            var element = (TabItemHeader)parent.HeaderPanel.Children[nextTabIndex];
 
-            //element.BringIntoView(new Rect(new Size(element.Width, element.Height)));
+            element.BringIntoView(new Rect(new Size(element.Width, element.Height)));
 
-            //parentContentPanel.Children[nextTabIndex].IsVisible = false;
-            //parentContentPanel.Children[nextTabIndex].Focus();
+            parent.ContentPanel.Children[nextTabIndex].IsVisible = true;
+            parent.ContentPanel.Children[nextTabIndex].Focus();
 
-            //parent.tabIndex = nextTabIndex;
+            parent.tabIndex = nextTabIndex;
         }
 
         private void CloseWindow_PointerReleased(object sender, PointerReleasedEventArgs e)

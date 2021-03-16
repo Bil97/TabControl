@@ -1,7 +1,6 @@
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Input;
-using Avalonia.Interactivity;
 using Avalonia.Layout;
 using Avalonia.Markup.Xaml;
 using Avalonia.Media;
@@ -13,30 +12,11 @@ using ThingLing.Avalonia.ControlsProperties;
 
 namespace ThingLing.Avalonia.Controls
 {
+    /// <summary>
+    ///  Represents a control that contains multiple items that share the same space on the screen.
+    /// </summary>
     public partial class TabControl : UserControl
     {
-        DockPanel TabStrip;
-        Image DocMenu;
-        StackPanel HeaderPanel;
-        Grid ContentPanel;
-        Border SeparatorBorder;
-        public TabControl()
-        {
-            InitializeComponent();
-
-            TabStrip = this.FindControl<DockPanel>("TabStrip");
-            DocMenu = this.FindControl<Image>("DocMenu");
-            HeaderPanel = this.FindControl<StackPanel>("HeaderPanel");
-            ContentPanel = this.FindControl<Grid>("ContentPanel");
-            SeparatorBorder = this.FindControl<Border>("SeparatorBorder");
-            SeparatorBorder.BorderBrush = SeparatorBorderColor ??= DefaultColors.SeparatorBorder;
-        }
-
-        private void InitializeComponent()
-        {
-            AvaloniaXamlLoader.Load(this);
-        }
-
         /// <summary>
         /// Determines whether the TabControl arranges TabItems as windows or as documents
         /// </summary>
@@ -63,6 +43,31 @@ namespace ThingLing.Avalonia.Controls
         /// Holds the index of the current focused TabItem in this TabControl
         /// </summary>
         internal int tabIndex = -1;
+
+        #region Controls
+        internal DockPanel TabStrip;
+        internal Image DocMenu;
+        internal StackPanel HeaderPanel;
+        internal Border SeparatorBorder;
+        internal Grid ContentPanel;
+        #endregion Controls
+        public TabControl()
+        {
+            InitializeComponent();
+            SeparatorBorder.BorderBrush = SeparatorBorderColor ??= DefaultColors.SeparatorBorder;
+        }
+
+        private void InitializeComponent()
+        {
+            AvaloniaXamlLoader.Load(this);
+
+            TabStrip = this.FindControl<DockPanel>(nameof(TabStrip));
+            DocMenu = this.FindControl<Image>(nameof(DocMenu));
+            HeaderPanel = this.FindControl<StackPanel>(nameof(HeaderPanel));
+            SeparatorBorder = this.FindControl<Border>(nameof(SeparatorBorder));
+            ContentPanel = this.FindControl<Grid>(nameof(ContentPanel));
+        }
+
 
         private void TabControl_Initialized(object sender, EventArgs e)
         {
@@ -114,14 +119,13 @@ namespace ThingLing.Avalonia.Controls
                 case TabMode.Document:
                     HeaderPanel.Children.Insert(tabIndex, tabItem.TabItemHeader());
                     ContentPanel.Children.Insert(tabIndex, tabItem.Content);
-
-                    tabItem.TabItemHeader().FindControl<Border>("HideButton").IsVisible = false;
-                    tabItem.TabItemHeader().FindControl<Border>("MenuButton").IsVisible = false;
+                    tabItem.TabItemHeader().HideButton.IsVisible = false;
+                    tabItem.TabItemHeader().MenuButton.IsVisible = false;
                     break;
                 case TabMode.Window:
-                    tabItem.TabItemHeader().FindControl<Border>("CloseButton").IsVisible = false;
-                    tabItem.TabItemHeader().FindControl<Border>("HideButton").IsVisible = false;
-                    tabItem.TabItemHeader().FindControl<Border>("MenuButton").IsVisible = false;
+                    tabItem.TabItemHeader().CloseButton.IsVisible = false;
+                    tabItem.TabItemHeader().HideButton.IsVisible = false;
+                    tabItem.TabItemHeader().MenuButton.IsVisible = false;
                     HeaderPanel.Children.Insert(tabIndex, tabItem.TabItemHeader());
                     ContentPanel.Children.Insert(tabIndex, tabItem.TabItemBody());
 
@@ -170,11 +174,9 @@ namespace ThingLing.Avalonia.Controls
             ContentPanel.Children[tabIndex].Focus();
         }
 
-       async private void OpenTabs_PointerReleased(object sender, PointerReleasedEventArgs e)
+        private void OpenTabs_PointerReleased(object sender, PointerReleasedEventArgs e)
         {
-            var contextMenu = new ContextMenu();
             var menuItems = new List<MenuItem>();
-
             foreach (var tabItem in TabItems)
             {
                 var menuItem = new MenuItem
@@ -211,10 +213,14 @@ namespace ThingLing.Avalonia.Controls
                 menuItems.Add(menuItem);
             }
 
-            await MessageBox.ShowAsync(MainWindow.Window, $"sender: {sender.GetType()} menu items: {menuItems.Count}");
+            var contextMenu = new ContextMenu { Items = menuItems };
+            ((Image)sender).ContextMenu = contextMenu;
 
-            //((Image)sender).ContextMenu.Items = menuItems;
-            //contextMenu.Open();
+            if (e.InitialPressMouseButton == MouseButton.Left)
+            {
+                contextMenu.Open();
+                e.Handled = true;
+            }
         }
 
         private void ContentPanel_LayoutUpdated(object sender, EventArgs e)

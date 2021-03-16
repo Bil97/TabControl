@@ -2,10 +2,13 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using ThingLing.WPF.Controls.InternalControls;
-using ThingLing.WPF.Controls.Properties;
+using ThingLing.WPF.Controls.Props;
 
 namespace ThingLing.WPF.Controls
 {
+    /// <summary>
+    ///  Represents a selectable item inside a Thingling.WPF.Controls.TabControl.
+    /// </summary>
     public class TabItem
     {
         private readonly TabItemHeader _tabItemHeader = new TabItemHeader();

@@ -1,7 +1,7 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
 
-namespace ThingLing.WPF.ControlsProperties
+namespace ThingLing.WPF.Controls.Props
 {
     internal static class ErrorMessage
     {

@@ -5,6 +5,9 @@ namespace ThingLing.Avalonia.Controls.InternalControls
 {
     public class TabItemBody : UserControl
     {
+        internal TabItemHeader TabItemHeader;
+        internal Grid ContentPanel;
+
         public TabItemBody()
         {
             InitializeComponent();
@@ -13,6 +16,9 @@ namespace ThingLing.Avalonia.Controls.InternalControls
         private void InitializeComponent()
         {
             AvaloniaXamlLoader.Load(this);
+
+            TabItemHeader = this.FindControl<TabItemHeader>(nameof(TabItemHeader));
+            ContentPanel = this.FindControl<Grid>(nameof(ContentPanel));
         }
     }
 }

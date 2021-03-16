@@ -6,37 +6,40 @@ using Tool_Tip = Avalonia.Controls.ToolTip;
 
 namespace ThingLing.Avalonia.Controls
 {
+    /// <summary>
+    ///  Represents a selectable item inside a ThingLing.Avalonia.Controls.TabControl.
+    /// </summary>
     public class TabItem
     {
         private readonly TabItemHeader _tabItemHeader = new TabItemHeader();
         private readonly TabItemBody _tabItemBody = new TabItemBody();
-        private Brush? _backgroundWhenFocused;
-        private Brush? _backgroundWhenUnFocused;
-        private Brush? _foregroundWhenFocused;
-        private Brush? _foregroundWhenUnFocused;
-        private Control? _content;
-        private Brush? _tabItemBodyBackground;
-        private static Brush? _tabItemBodyForeground;
+        private Brush _backgroundWhenFocused;
+        private Brush _backgroundWhenUnFocused;
+        private Brush _foregroundWhenFocused;
+        private Brush _foregroundWhenUnFocused;
+        private Control _content;
+        private Brush _tabItemBodyBackground;
+        private static Brush _tabItemBodyForeground;
 
         /// <summary>
         /// Holds the Title of the TabItem
         /// </summary>
-        public string? Header { get; set; }
+        public string Header { get; set; }
 
         /// <summary>
         /// Holds the Icon of the content displayed in the TabItem body
         /// </summary>
-        public Image? ContentIcon { get; set; }
+        public Image ContentIcon { get; set; }
 
         /// <summary>
         /// Holds extra information displayed as tooltip in the TabItem header
         /// </summary>
-        public string? ToolTip { get; set; }
+        public string ToolTip { get; set; }
 
         /// <summary>
         /// Holds the content displayed in the TabItem body
         /// </summary>
-        public Control? Content
+        public Control Content
         {
             get => _content;
             set
@@ -110,14 +113,10 @@ namespace ThingLing.Avalonia.Controls
         /// </summary>
         internal TabItemHeader TabItemHeader()
         {
-            _ = _tabItemHeader.FindControl<Image>("ContentIcon");
-            _ = ContentIcon;
-
-            var header = _tabItemHeader.FindControl<TextBlock>("ContentTitle");
-            header.Text = Header;
-            Tool_Tip.SetTip(header, ToolTip);
-
-            _tabItemHeader.FindControl<TextBlock>("ContentChanged").IsVisible = ContentChanged;
+            _tabItemHeader.ContentIcon = ContentIcon;
+            _tabItemHeader.ContentTitle.Text = Header;
+            Tool_Tip.SetTip(_tabItemHeader, ToolTip);
+            _tabItemHeader.ContentChanged.IsVisible = ContentChanged;
             _tabItemHeader.Background = BackgroundWhenFocused;
             _tabItemHeader.Foreground = ForegroundWhenFocused;
             return _tabItemHeader;
@@ -128,19 +127,15 @@ namespace ThingLing.Avalonia.Controls
         /// </summary>
         internal TabItemBody TabItemBody()
         {
-            _ = _tabItemBody.FindControl<TabItemHeader>("TabItemHeader").FindControl<Image>("ContentIcon");
-            _ = ContentIcon;
-
-            var header = _tabItemBody.FindControl<TabItemHeader>("TabItemHeader").FindControl<TextBlock>("ContentTitle");
-            header.Text = Header;
-            Tool_Tip.SetTip(header, ToolTip);
-            _tabItemBody.FindControl<TabItemHeader>("TabItemHeader").FindControl<TextBlock>("ContentChanged").IsVisible = ContentChanged;
-
-            _tabItemBody.FindControl<TabItemHeader>("TabItemHeader").Background = BackgroundWhenFocused;
-            _tabItemBody.FindControl<TabItemHeader>("TabItemHeader").Foreground = ForegroundWhenFocused;
-            _tabItemBody.FindControl<Grid>("ContentPanel").Background = TabItemBodyBackground;
+            _tabItemBody.TabItemHeader.ContentIcon = ContentIcon;
+            _tabItemBody.TabItemHeader.ContentTitle.Text = Header;
+            Tool_Tip.SetTip(_tabItemBody, ToolTip);
+            _tabItemBody.TabItemHeader.ContentChanged.IsVisible = ContentChanged;
+            _tabItemBody.TabItemHeader.Background = BackgroundWhenFocused;
+            _tabItemBody.TabItemHeader.Foreground = ForegroundWhenFocused;
+            _tabItemBody.ContentPanel.Background = TabItemBodyBackground;
             _tabItemBody.Foreground = TabItemBodyForeground;
-            _tabItemBody.FindControl<Grid>("ContentPanel").Children.Add(Content);
+            _tabItemBody.ContentPanel.Children.Add(Content);
             return _tabItemBody;
         }
     }
