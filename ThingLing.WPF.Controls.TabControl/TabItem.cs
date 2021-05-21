@@ -1,7 +1,6 @@
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
-using ThingLing.WPF.Controls.InternalControls;
 using ThingLing.WPF.Controls.Props;
 
 namespace ThingLing.WPF.Controls
@@ -11,8 +10,8 @@ namespace ThingLing.WPF.Controls
     /// </summary>
     public class TabItem
     {
-        private readonly TabItemHeader _tabItemHeader = new TabItemHeader();
-        private readonly TabItemBody _tabItemBody = new TabItemBody();
+        private TabItemHeader _tabItemHeader = new TabItemHeader();
+        private TabItemBody _tabItemBody = new TabItemBody();
         private Brush _backgroundWhenFocused;
         private Brush _backgroundWhenUnFocused;
         private Brush _foregroundWhenFocused;
@@ -22,9 +21,9 @@ namespace ThingLing.WPF.Controls
         private static Brush _tabItemBodyForeground;
 
         /// <summary>
-        /// Holds the Title of the TabItem
+        /// Holds the Title text of the TabItem
         /// </summary>
-        public string Header { get; set; }
+        public string ContentTitle { get; set; }
 
         /// <summary>
         /// Holds the Icon of the content displayed in the TabItem body
@@ -59,7 +58,7 @@ namespace ThingLing.WPF.Controls
         /// </summary>
         public Brush BackgroundWhenFocused
         {
-            get => _backgroundWhenFocused ??= DefaultColors.FocusedTabItemBackground;
+            get => _backgroundWhenFocused ??= CurrentTheme.FocusedTabItemBackground;
             set => _backgroundWhenFocused = value;
         }
 
@@ -68,7 +67,7 @@ namespace ThingLing.WPF.Controls
         /// </summary>
         public Brush BackgroundWhenUnFocused
         {
-            get => _backgroundWhenUnFocused ??= DefaultColors.UnFocusedTabItemBackground;
+            get => _backgroundWhenUnFocused ??= CurrentTheme.UnFocusedTabItemBackground;
             set => _backgroundWhenUnFocused = value;
         }
 
@@ -77,7 +76,7 @@ namespace ThingLing.WPF.Controls
         /// </summary>
         public Brush ForegroundWhenFocused
         {
-            get => _foregroundWhenFocused ??= DefaultColors.FocusedTabItemForeground;
+            get => _foregroundWhenFocused ??= CurrentTheme.FocusedTabItemForeground;
             set => _foregroundWhenFocused = value;
         }
 
@@ -86,7 +85,7 @@ namespace ThingLing.WPF.Controls
         /// </summary>
         public Brush ForegroundWhenUnFocused
         {
-            get => _foregroundWhenUnFocused ??= DefaultColors.UnFocusedTabItemForeground;
+            get => _foregroundWhenUnFocused ??= CurrentTheme.UnFocusedTabItemForeground;
             set => _foregroundWhenUnFocused = value;
         }
 
@@ -95,7 +94,7 @@ namespace ThingLing.WPF.Controls
         /// </summary>
         public Brush TabItemBodyBackground
         {
-            get => _tabItemBodyBackground ??= DefaultColors.TabItemBodyBackground;
+            get => _tabItemBodyBackground ??= CurrentTheme.TabItemBodyBackground;
             set => _tabItemBodyBackground = value;
         }
 
@@ -104,17 +103,18 @@ namespace ThingLing.WPF.Controls
         /// </summary>
         public static Brush TabItemBodyForeground
         {
-            get => _tabItemBodyForeground ??= DefaultColors.TabItemBodyForeground;
+            get => _tabItemBodyForeground ??= CurrentTheme.TabItemBodyForeground;
             set => _tabItemBodyForeground = value;
         }
 
         /// <summary>
         /// Holds the content displayed in the TabItem Header
+        /// Do <bold>NOT</bold> use this property in your project! It is for internal use with the ThingLing DockControl
         /// </summary>
-        internal TabItemHeader TabItemHeader()
+        public TabItemHeader TabItemHeader()
         {
             _tabItemHeader.ContentIcon = ContentIcon;
-            _tabItemHeader.ContentTitle.Text = Header;
+            _tabItemHeader.ContentTitle.Text = ContentTitle;
             _tabItemHeader.ContentTitle.ToolTip = ToolTip;
             _tabItemHeader.ContentChanged.Visibility = ContentChanged ? Visibility.Visible : Visibility.Collapsed;
             _tabItemHeader.Background = BackgroundWhenFocused;
@@ -123,19 +123,19 @@ namespace ThingLing.WPF.Controls
         }
 
         /// <summary>
-        /// Holds the content displayed in the TabItem Body
+        /// Holds the content displayed in the TabItem Body. 
+        /// Do <bold>NOT</bold> use this property in your project! It is for internal use with the ThingLing DockControl
         /// </summary>
-        internal TabItemBody TabItemBody()
+        public TabItemBody TabItemBody()
         {
             _tabItemBody.TabItemHeader.ContentIcon = ContentIcon;
-            _tabItemBody.TabItemHeader.ContentTitle.Text = Header;
+            _tabItemBody.TabItemHeader.ContentTitle.Text = ContentTitle;
             _tabItemBody.TabItemHeader.ContentTitle.ToolTip = ToolTip;
             _tabItemBody.TabItemHeader.ContentChanged.Visibility = ContentChanged ? Visibility.Visible : Visibility.Collapsed;
             _tabItemBody.TabItemHeader.Background = BackgroundWhenFocused;
             _tabItemBody.TabItemHeader.Foreground = ForegroundWhenFocused;
             _tabItemBody.ContentPanel.Background = TabItemBodyBackground;
             _tabItemBody.Foreground = TabItemBodyForeground;
-            _tabItemBody.ContentPanel.Children.Add(Content);
             return _tabItemBody;
         }
     }

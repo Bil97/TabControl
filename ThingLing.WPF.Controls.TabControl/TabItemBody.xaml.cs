@@ -1,13 +1,12 @@
 ﻿using System.Windows.Controls;
 
-namespace ThingLing.WPF.Controls.InternalControls
+namespace ThingLing.WPF.Controls
 {
-    internal partial class TabItemBody : UserControl
+    public partial class TabItemBody : UserControl
     {
         public TabItemBody()
         {
             InitializeComponent();
         }
-
     }
 }

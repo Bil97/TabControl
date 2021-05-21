@@ -18,14 +18,14 @@
       <Image Source="/Images/close.png" Height="15" />
     </Border>
     <Border x:Name="HideButton" BorderThickness="1" BorderBrush="Transparent" DockPanel.Dock="Right"
-            ToolTip.Tip="Hide"
+            ToolTip.Tip="Hide" IsVisible="false"
             PointerEnter="Border_PointerEnter"
             PointerLeave="Border_PointerLeave"
             PointerReleased="HideWindow_PointerReleased">
       <Image Source="/Images/minimize.png" Height="15" />
     </Border>
     <Border x:Name="MenuButton" BorderThickness="1" BorderBrush="Transparent" DockPanel.Dock="Right"
-            ToolTip.Tip="Menu"
+            ToolTip.Tip="Menu" IsVisible="false"
             PointerEnter="Border_PointerEnter"
             PointerLeave="Border_PointerLeave"
             PointerReleased="WindowMenu_PointerReleased">

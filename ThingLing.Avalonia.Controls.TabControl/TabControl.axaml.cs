@@ -37,6 +37,11 @@ namespace ThingLing.Avalonia.Controls
         /// </summary>
         public Brush SeparatorBorderColor { get; set; }
 
+        /// <summary>
+        /// Do <bold>NOT</bold> use this property in your project!
+        /// </summary>
+        public static bool ShowDockButtons { get; set; } = false;
+
         internal readonly List<TabItem> TabItems = new List<TabItem>();
 
         /// <summary>

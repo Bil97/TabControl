@@ -20,6 +20,12 @@ namespace ThingLing.Avalonia.Controls.InternalControls
         public TabItemHeader()
         {
             InitializeComponent();
+
+            if (TabControl.ShowDockButtons)
+            {
+                HideButton.IsVisible = true;
+                MenuButton.IsVisible = true;
+            }
             Initialized += TabItemHeader_Initialized;
         }
 

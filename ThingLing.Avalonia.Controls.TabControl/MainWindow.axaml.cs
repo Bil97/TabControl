@@ -19,7 +19,7 @@ namespace ThingLing.Avalonia.Controls
             Window = this;
 
             tab = this.FindControl<TabControl>("tab");
-            tab.TabMode = TabMode.Window;
+            tab.TabMode = TabMode.Document;
             tab.TabStripPlacement = TabStripPlacement.Left;
         }
 
@@ -29,7 +29,7 @@ namespace ThingLing.Avalonia.Controls
         }
 
         private int i = 0;
-       async private void Button_Click(object sender, RoutedEventArgs e)
+       private void Button_Click(object sender, RoutedEventArgs e)
         {
             var tabItem = new TabItem
             {

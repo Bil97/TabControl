@@ -5,11 +5,10 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:ThingLing.WPF.Controls"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800"
-             Loaded="TabControl_Loaded">
+             d:DesignHeight="450" d:DesignWidth="800">
     <DockPanel>
         <DockPanel x:Name="TabStrip">
-            <Image x:Name="DocMenu" Source="Images/DocMenu.png" DockPanel.Dock="Right"
+            <Image x:Name="DocMenu" Source="Images/dock_menu.png" DockPanel.Dock="Right"
                    ToolTip="Show Open Tabs" Height="15"
                    MouseLeftButtonUp="OpenTabs_MouseLeftButtonUp" />
             <ScrollViewer HorizontalScrollBarVisibility="Hidden"
@@ -19,7 +18,7 @@
         </DockPanel>
 
         <Border x:Name="SeparatorBorder" BorderThickness="1" HorizontalAlignment="Stretch" />
-        <Grid x:Name="ContentPanel" LayoutUpdated="ContentPanel_LayoutUpdated"/>
+        <Grid x:Name="ContentPanel" x:FieldModifier="public"/>
     </DockPanel>
 
 </UserControl>

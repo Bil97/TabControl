@@ -2,41 +2,41 @@
 
 namespace ThingLing.WPF.Controls.Props
 {
-    internal static class DefaultColors
+    internal static class CurrentTheme
     {
         /// <summary>
         /// Holds the default Background color of the TabItem header when it is focused
         /// </summary>
-        public static Brush FocusedTabItemBackground => Brushes.Teal;
+        public static Brush FocusedTabItemBackground { get; set; }
 
         /// <summary>
         /// Holds the default font color of the TabItem header when it is focused
         /// </summary>
-        public static Brush FocusedTabItemForeground => Brushes.Tan;
+        public static Brush FocusedTabItemForeground { get; set; }
 
         /// <summary>
         /// Holds the default Background color of the TabItem header when it is not focused
         /// </summary>
-        public static  Brush UnFocusedTabItemBackground =>Brushes.CadetBlue;
-        
+        public static Brush UnFocusedTabItemBackground { get; set; }
+
         /// <summary>
         /// Holds the default font color of the TabItem header when it is not focused
         /// </summary>
-        public static Brush UnFocusedTabItemForeground => Brushes.BurlyWood;
-        
+        public static Brush UnFocusedTabItemForeground { get; set; }
+
         /// <summary>
         /// Holds the default font color of the SeparatorBorder
         /// </summary>
-        public static Brush SeparatorBorder => Brushes.Teal;
-        
+        public static Brush SeparatorBorder { get; set; }
+
         /// <summary>
         /// Holds the default background color of the TabItem Body 
         /// </summary>
-        public  static  Brush TabItemBodyBackground=>Brushes.SeaGreen;
-        
+        public static Brush TabItemBodyBackground { get; set; }
+
         /// <summary>
         /// Holds the default font color of the TabItem Body
         /// </summary>
-        public  static  Brush TabItemBodyForeground=>Brushes.PeachPuff;
+        public static Brush TabItemBodyForeground { get; set; }
     }
 }

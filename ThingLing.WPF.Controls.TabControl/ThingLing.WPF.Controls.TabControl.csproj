@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net5.0-windows</TargetFramework>
@@ -15,7 +15,25 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Resource Include="Images\*" />
+    <None Remove="Images\auto_hide.png" />
+    <None Remove="Images\close.png" />
+    <None Remove="Images\dock_as_document.png" />
+    <None Remove="Images\dock_bottom.png" />
+    <None Remove="Images\dock_menu.png" />
+    <None Remove="Images\dock_top.png" />
+    <None Remove="Images\menu.png" />
+    <None Remove="Images\minimize.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Images\auto_hide.png" />
+    <Resource Include="Images\close.png" />
+    <Resource Include="Images\dock_as_document.png" />
+    <Resource Include="Images\dock_bottom.png" />
+    <Resource Include="Images\dock_menu.png" />
+    <Resource Include="Images\dock_top.png" />
+    <Resource Include="Images\menu.png" />
+    <Resource Include="Images\minimize.png" />
   </ItemGroup>
 
   <ItemGroup>
@@ -25,11 +43,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Page Update="InternalControls\TabItemBody.xaml">
+    <Page Update="TabItemBody.xaml">
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="InternalControls\TabItemHeader.xaml">
+    <Page Update="TabItemHeader.xaml">
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
       <SubType>Designer</SubType>
     </Page>

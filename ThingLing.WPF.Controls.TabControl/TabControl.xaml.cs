@@ -4,8 +4,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
-using ThingLing.WPF.Controls.InternalControls;
-using ThingLing.WPF.Controls.Props;
+using ThingLing.WPF.Controls.Methods;
 using ThingLing.WPF.Controls.Props;
 
 namespace ThingLing.WPF.Controls
@@ -23,17 +22,25 @@ namespace ThingLing.WPF.Controls
         /// <summary>
         /// Determines the location of the TabStrip or TabItem headers; whether Top, Left, Bottom or Right
         /// </summary>
-        public TabStripPlacement TabStripPlacement { get; set; }
+        public TabStripPlacement? TabStripPlacementSide { get; set; }
 
         /// <summary>
         /// Determines the Angle of rotation of a TabIte
         /// </summary>
-        public double? TabItemRotationAngle;
+        public double? TabItemRotationAngle { get; set; }
+        //public double TabItemRotationAngle { get; set; } = 0D;
 
         /// <summary>
-        /// Holds the default font color of the SeparatorBorder
+        /// Determines the Angle of rotation of a TabItem
         /// </summary>
-        public Brush SeparatorBorderColor { get; set; }
+        public int TabItemsCount { get; set; }
+
+        /// <summary>
+        /// The currently selected TabItem 
+        /// </summary>
+        public TabItem SelectedTabItem { get; set; }
+
+        public static ContextMenu DockingContextMenu { get; set; }
 
         internal readonly List<TabItem> TabItems = new List<TabItem>();
 
@@ -44,69 +51,97 @@ namespace ThingLing.WPF.Controls
         public TabControl()
         {
             InitializeComponent();
-            SeparatorBorder.BorderBrush = SeparatorBorderColor ??= DefaultColors.SeparatorBorder;
+            _ = new LoadTheme();
+        }
+
+        public TabControl(TabControlTheme theme)
+        {
+            InitializeComponent();
+            _ = new LoadTheme(theme);
         }
 
         private void TabControl_Loaded(object sender, RoutedEventArgs e)
         {
-            switch (TabStripPlacement)
+            SeparatorBorder.BorderBrush = CurrentTheme.SeparatorBorder;
+
+            /* var parent = $"{((this.Parent as Panel)?.Parent as Panel)?.Parent.GetType()}";
+             var floatingWindow = "ThingLing.WPF.Controls.InternalControls.FloatingWindow";
+             if (parent != floatingWindow)*/
+            this.ContentPanel.LayoutUpdated += ContentPanel_LayoutUpdated;
+            //TabStrip_Placement();
+        }
+
+        private void TabStrip_Placement()
+        {
+            switch (TabStripPlacementSide)
             {
                 case TabStripPlacement.Top:
                     TabItemRotationAngle ??= 0;
                     DockPanel.SetDock(TabStrip, Dock.Top);
                     DockPanel.SetDock(SeparatorBorder, Dock.Top);
                     HeaderPanel.Orientation = Orientation.Horizontal;
-                    DocMenu.RenderTransform = new RotateTransform(0);
+                    DockPanel.SetDock(DocMenu, Dock.Right);
                     break;
                 case TabStripPlacement.Left:
-                    TabItemRotationAngle ??= -45;
+                    TabItemRotationAngle ??= -90;
                     DockPanel.SetDock(TabStrip, Dock.Left);
                     DockPanel.SetDock(SeparatorBorder, Dock.Left);
                     HeaderPanel.Orientation = Orientation.Vertical;
-                    DocMenu.RenderTransform = new RotateTransform(-45);
+                    DockPanel.SetDock(DocMenu, Dock.Bottom);
                     break;
                 case TabStripPlacement.Bottom:
                     TabItemRotationAngle ??= 0;
                     DockPanel.SetDock(TabStrip, Dock.Bottom);
                     DockPanel.SetDock(SeparatorBorder, Dock.Bottom);
                     HeaderPanel.Orientation = Orientation.Horizontal;
-                    DocMenu.RenderTransform = new RotateTransform(0);
+                    DockPanel.SetDock(DocMenu, Dock.Right);
                     break;
                 case TabStripPlacement.Right:
-                    TabItemRotationAngle ??= 45;
+                    TabItemRotationAngle ??= 90;
                     DockPanel.SetDock(TabStrip, Dock.Right);
                     DockPanel.SetDock(SeparatorBorder, Dock.Right);
                     HeaderPanel.Orientation = Orientation.Vertical;
-                    DocMenu.RenderTransform = new RotateTransform(45);
+                    DockPanel.SetDock(DocMenu, Dock.Bottom);
                     break;
             }
-
-            if (TabItemRotationAngle == null) return;
-            HeaderPanel.RenderTransform = new RotateTransform((double)TabItemRotationAngle);
         }
 
         /// <summary>
-        /// Adds a new TabItem to the target InpossibleTabControl
+        /// Adds a new TabItem to this TabControl
         /// </summary>
         /// <param name="tabItem"></param>
         public void Add(TabItem tabItem)
         {
+            // Select a TabItem
+            this.SelectedTabItem = tabItem;
+            tabItem.TabItemHeader().MouseDown += TabItem_MouseDown;
+            tabItem.TabItemBody().MouseDown += TabItem_MouseDown;
+            void TabItem_MouseDown(object sender, MouseButtonEventArgs e)
+            {
+                this.SelectedTabItem = tabItem;
+            }
+
             ++tabIndex;
             switch (TabMode)
             {
+                default:
                 case TabMode.Document:
+                    // Do not mess this order
+                    TabStripPlacementSide ??= TabStripPlacement.Top;
+                    TabStrip_Placement();
+                    tabItem.TabItemHeader().LayoutTransform = new RotateTransform((double)TabItemRotationAngle);
                     HeaderPanel.Children.Insert(tabIndex, tabItem.TabItemHeader());
                     ContentPanel.Children.Insert(tabIndex, tabItem.Content);
-                    tabItem.TabItemHeader().HideButton.Visibility = Visibility.Collapsed;
-                    tabItem.TabItemHeader().MenuButton.Visibility = Visibility.Collapsed;
                     break;
                 case TabMode.Window:
+                    // Do not mess this order
+                    TabStripPlacementSide ??= TabStripPlacement.Bottom;
+                    TabStrip_Placement();
+                    tabItem.TabItemHeader().LayoutTransform = new RotateTransform((double)TabItemRotationAngle);
                     tabItem.TabItemHeader().CloseButton.Visibility = Visibility.Collapsed;
-                    tabItem.TabItemHeader().HideButton.Visibility = Visibility.Collapsed;
-                    tabItem.TabItemHeader().MenuButton.Visibility = Visibility.Collapsed;
                     HeaderPanel.Children.Insert(tabIndex, tabItem.TabItemHeader());
+                    tabItem.TabItemBody().ContentPanel.Children.Add(tabItem.Content);
                     ContentPanel.Children.Insert(tabIndex, tabItem.TabItemBody());
-
                     break;
             }
 
@@ -159,7 +194,7 @@ namespace ThingLing.WPF.Controls
             {
                 var menuItem = new MenuItem
                 {
-                    Header = tabItem.Header,
+                    Header = tabItem.ContentTitle,
                     Icon = tabItem.ContentIcon
                 };
                 menuItem.Click += (sender1, e1) =>
@@ -197,7 +232,8 @@ namespace ThingLing.WPF.Controls
 
         private void ContentPanel_LayoutUpdated(object sender, EventArgs e)
         {
-            switch (ContentPanel.Children.Count)
+            TabItemsCount = ContentPanel.Children.Count;
+            switch (TabItemsCount)
             {
                 case 0:
                     Visibility = Visibility.Collapsed;

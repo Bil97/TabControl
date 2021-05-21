@@ -1,5 +1,6 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
+using ThingLing.WPF.Controls;
 using TabControl = ThingLing.WPF.Controls.TabControl;
 using TabItem = ThingLing.WPF.Controls.TabItem;
 
@@ -28,7 +29,7 @@ namespace WPFTestApp
         {
             var tabItem = new TabItem
             {
-                Header = $"Hello RichTextBox {++i}",
+                ContentTitle = $"Hello RichTextBox {++i}",
                 Content = new TextBox { Text = $"Helloo {i}", TextWrapping = TextWrapping.Wrap },
                 ToolTip = $"RichTextBox {i}"
             };

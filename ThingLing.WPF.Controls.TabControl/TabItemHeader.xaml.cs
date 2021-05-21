@@ -3,20 +3,22 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
-using ThingLing.WPF.Controls;
-using TabItem = ThingLing.WPF.Controls.TabItem;
 
-namespace ThingLing.WPF.Controls.InternalControls
+namespace ThingLing.WPF.Controls
 {
-    internal partial class TabItemHeader : UserControl
+    public partial class TabItemHeader : UserControl
     {
-
         public TabItemHeader()
         {
             InitializeComponent();
 
+            MenuButton.ContextMenu = TabControl.DockingContextMenu;
+            //if (TabControl.ShowDockButtons)
+            //{
+            //    HideButton.Visibility = Visibility.Visible;
+            //    MenuButton.Visibility = Visibility.Visible;
+            //}
             this.Loaded += TabItemHeader_Loaded;
-
         }
 
         private void TabItemHeader_Loaded(object sender, RoutedEventArgs e)
@@ -85,11 +87,6 @@ namespace ThingLing.WPF.Controls.InternalControls
             e.Handled = true;
         }
 
-        private void HideWindow_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
-        {
-            //Close();
-        }
-
         private void WindowMenu_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
             var contextMenu = ((Border)sender).ContextMenu;
@@ -98,19 +95,5 @@ namespace ThingLing.WPF.Controls.InternalControls
             e.Handled = true;
         }
 
-        private void DockTop_Click(object sender, RoutedEventArgs e)
-        {
-            //
-        }
-
-        private void DockBottom_Click(object sender, RoutedEventArgs e)
-        {
-            //
-        }
-
-        private void DockDocument_Click(object sender, RoutedEventArgs e)
-        {
-            //
-        }
     }
 }
